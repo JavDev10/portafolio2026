@@ -1,0 +1,206 @@
+---
+const steps = ["Diseñar", "Construir", "Probar", "Lanzar", "Iterar"];
+import { ThinkingOrb } from 'thinking-orbs';
+
+---
+
+<section class="relative flex min-h-svh flex-col justify-center overflow-hidden lg:block lg:min-h-0">
+  <video
+    class="absolute inset-0 h-full w-full object-cover lg:hidden"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
+    <source src="/video.mp4" type="video/mp4" />
+  </video>
+  <div class="absolute inset-0 bg-background/80 lg:hidden"></div>
+
+  <div
+    class="relative mx-auto max-w-6xl px-6 pt-24 pb-16 lg:grid lg:grid-cols-[1.15fr_1fr] lg:items-stretch lg:gap-10 lg:pt-40 lg:pb-24"
+  >
+    <div class="flex flex-col gap-10">
+      <div class="hero-fade flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <span><ThinkingOrb state="composing" size={20} client:visible/></span>
+        <span class="hero-line h-px flex-1 bg-border"></span>
+        <span>INTRO-01</span>
+      </div>
+
+      <h1 class="text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl lg:text-7xl xl:text-8xl">
+        <span class="scramble" data-text="DISEÑA.">DISEÑA.</span><br />
+        <span class="scramble" data-text="CONSTRUYE.">CONSTRUYE.</span>
+      </h1>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+        {steps.map((step, i) => (
+          <>
+            <span class="hero-fade border border-border px-3 py-1" style={`animation-delay: ${0.7 + i * 0.08}s`}>
+              {step}
+            </span>
+            {i < steps.length - 1 && (
+              <span class="hero-fade text-accent" style={`animation-delay: ${0.74 + i * 0.08}s`}>
+                &rarr;
+              </span>
+            )}
+          </>
+        ))}
+      </div>
+
+      <p
+        class="hero-fade max-w-xl text-balance text-base text-muted-foreground sm:text-lg"
+        style="animation-delay: 1.15s"
+      >
+        Ingeniero full-stack (Laravel, PHP, React/TypeScript) especializado en automatizar procesos e integrar APIs, reemplazo trabajo manual por sistemas que corren solos, desde el primer commit hasta producción.
+      </p>
+
+      <div class="hero-fade" style="animation-delay: 1.3s">
+        <a
+          href="#work"
+          class="inline-block border border-foreground bg-foreground px-6 py-3 text-xs uppercase tracking-widest text-background transition-opacity hover:opacity-80"
+        >
+          Ver Proyectos
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-panel hidden border-2 border-foreground lg:block">
+      <video class="h-full w-full object-cover" autoplay muted loop playsinline preload="auto">
+        <source src="/video.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+</section>
+
+<script>
+  interface ScrambleItem {
+    from: string;
+    to: string;
+    start: number;
+    end: number;
+    char?: string;
+  }
+
+  class TextScramble {
+    el: HTMLElement;
+    chars: string;
+    queue: ScrambleItem[] = [];
+    frame = 0;
+    frameRequest = 0;
+    resolve: () => void = () => {};
+
+    constructor(el: HTMLElement) {
+      this.el = el;
+      this.chars = "!<>-_\\/[]{}—=+*^?#________";
+      this.update = this.update.bind(this);
+    }
+
+    setText(newText: string) {
+      const oldText = this.el.innerText;
+      const length = Math.max(oldText.length, newText.length);
+      const promise = new Promise<void>((resolve) => (this.resolve = resolve));
+      this.queue = [];
+      for (let i = 0; i < length; i++) {
+        const from = oldText[i] || "";
+        const to = newText[i] || "";
+        const start = Math.floor(Math.random() * 80);
+        const end = start + Math.floor(Math.random() * 80);
+        this.queue.push({ from, to, start, end });
+      }
+      cancelAnimationFrame(this.frameRequest);
+      this.frame = 0;
+      this.update();
+      return promise;
+    }
+
+    update() {
+      let output = "";
+      let complete = 0;
+      for (let i = 0, n = this.queue.length; i < n; i++) {
+        const item = this.queue[i];
+        const { from, to, start, end } = item;
+        let char = item.char;
+        if (this.frame >= end) {
+          complete++;
+          output += to;
+        } else if (this.frame >= start) {
+          if (!char || Math.random() < 0.28) {
+            char = this.randomChar();
+            item.char = char;
+          }
+          output += `<span class="dud">${char}</span>`;
+        } else {
+          output += from;
+        }
+      }
+      this.el.innerHTML = output;
+      if (complete === this.queue.length) {
+        this.resolve();
+      } else {
+        this.frameRequest = requestAnimationFrame(this.update);
+        this.frame++;
+      }
+    }
+
+    randomChar() {
+      return this.chars[Math.floor(Math.random() * this.chars.length)];
+    }
+  }
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>(".scramble").forEach((el, i) => {
+    const finalText = el.dataset.text ?? el.textContent ?? "";
+    if (reduceMotion) return;
+    const fx = new TextScramble(el);
+    setTimeout(() => fx.setText(finalText), i * 300);
+  });
+</script>
+
+<style>
+  .scramble :global(.dud) {
+    color: var(--color-accent);
+    opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-line {
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: hero-line-draw 0.7s ease-out 0.1s forwards;
+    }
+
+    .hero-fade {
+      opacity: 0;
+      animation: hero-fade-up 0.6s ease-out forwards;
+    }
+
+    .hero-panel {
+      clip-path: inset(0 100% 0 0);
+      animation: hero-panel-wipe 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+    }
+  }
+
+  @keyframes hero-line-draw {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-panel-wipe {
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+</style>

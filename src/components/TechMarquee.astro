@@ -1,0 +1,56 @@
+---
+const stack = [
+  { name: "PHP", slug: "php" },
+  { name: "Laravel", slug: "laravel" },
+  { name: "Python", slug: "python" },
+  { name: "API REST" },
+  { name: "React", slug: "react" },
+  { name: "TypeScript", slug: "typescript" },
+  { name: "JavaScript", slug: "javascript" },
+  { name: "WordPress", slug: "wordpress" },
+  { name: "WooCommerce", slug: "woocommerce" },
+  { name: "Elementor", slug: "elementor" },
+  { name: "n8n", slug: "n8n" },
+  { name: "MySQL", slug: "mysql" },
+  { name: "PostgreSQL", slug: "postgresql" },
+  { name: "Linux", slug: "linux" },
+  { name: "Docker", slug: "docker" },
+  { name: "Git", slug: "git" },
+  { name: "Playwright" },
+  { name: "Supabase", slug: "supabase" },
+  { name: "Vite", slug: "vite" },
+  { name: "Firebase", slug: "firebase" },
+  { name: "Electron", slug: "electron" },
+  { name: "Tailwind CSS", slug: "tailwindcss" },
+];
+
+import { ThinkingOrb } from 'thinking-orbs';
+---
+
+<section id="stack" class="overflow-hidden border-b border-border" data-reveal>
+  <div class="mx-auto max-w-6xl px-6 pt-20">
+    <div class="mb-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <span><ThinkingOrb state="listening" size={20} speed={0.65} theme="dark" client:visible /></span>
+      <span class="line-draw h-px flex-1 bg-border"></span>
+      <span>TECNOLOGÍAS-05</span>
+    </div>
+  </div>
+
+  <div class="relative bg-card py-10">
+    <div class="flex w-max animate-marquee gap-16">
+      {[...stack, ...stack].map((tech) => (
+        <span class="flex items-center gap-3 whitespace-nowrap">
+          {tech.slug && (
+            <img
+              src={`https://cdn.simpleicons.org/${tech.slug}/999999`}
+              alt=""
+              loading="lazy"
+              class="h-6 w-6 shrink-0 opacity-70 grayscale"
+            />
+          )}
+          <span class="text-xl font-bold tracking-tight text-muted-foreground/70 sm:text-2xl">{tech.name}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>

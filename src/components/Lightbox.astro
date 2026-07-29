@@ -1,0 +1,55 @@
+---
+---
+
+<div
+  id="lightbox"
+  class="fixed inset-0 z-[100] hidden items-center justify-center bg-background/95 p-6 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Vista ampliada de imagen"
+>
+  <button
+    type="button"
+    id="lightbox-close"
+    aria-label="Cerrar"
+    class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border border-foreground/20 bg-background text-foreground transition-colors hover:bg-foreground hover:text-background"
+  >
+    &#10005;
+  </button>
+  <img id="lightbox-img" src="" alt="" class="max-h-full max-w-full border-2 border-foreground object-contain" />
+</div>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement | null;
+  const closeBtn = document.getElementById("lightbox-close");
+
+  function openLightbox(src: string, alt: string) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt;
+    lightbox.classList.remove("hidden");
+    lightbox.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.add("hidden");
+    lightbox.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+  document.addEventListener("click", (e) => {
+    const target = (e.target as HTMLElement).closest<HTMLImageElement>("img[data-lightbox]");
+    if (target) openLightbox(target.currentSrc || target.src, target.alt);
+  });
+
+  closeBtn?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
+  });
+</script>

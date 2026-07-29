@@ -1,0 +1,76 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import { projects } from "../data/projects";
+import { ThinkingOrb } from 'thinking-orbs';
+
+const spotlight = projects.find((p) => p.spotlight);
+const rest = projects.filter((p) => p.featured && !p.spotlight).slice(0, 2);
+---
+
+<section id="work" class="relative overflow-hidden border-b border-border" data-reveal>
+  <div class="pointer-events-none absolute inset-y-0 left-0 hidden border-r border-border lg:block lg:w-[max(0px,min(calc((100vw-64rem)/2),22rem))] [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
+    <img src="/img-lateral.jpg" alt="" class="h-full w-full object-cover opacity-100 grayscale" />
+  </div>
+  <div class="pointer-events-none absolute inset-y-0 right-0 hidden border-l border-border lg:block lg:w-[max(0px,min(calc((100vw-64rem)/2),22rem))] [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
+    <img src="/img-lateral2.jpg" alt="" class="h-full w-full object-cover opacity-100 grayscale" />
+  </div>
+
+  <div class="relative mx-auto max-w-6xl px-6 py-20">
+    <div class="work-fade mb-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <span><ThinkingOrb state="searching" size={20} speed={0.65} theme="dark" client:visible /> </span>
+      <span class="line-draw h-px flex-1 bg-border"></span>
+      <span>PROYECTOS-04</span>
+    </div>
+
+    <div class="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+      <h2 class="work-fade text-3xl font-bold tracking-tight sm:text-5xl" style="animation-delay: 0.15s">
+        Proyectos Destacados
+      </h2>
+      <a
+        href="/work"
+        class="work-fade inline-flex items-center gap-1 border border-foreground px-4 py-2 text-xs uppercase tracking-widest transition-colors hover:bg-foreground hover:text-background"
+        style="animation-delay: 0.25s"
+      >
+        Ver Todos los Proyectos <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      {spotlight && <ProjectCard project={spotlight} index={0} featured />}
+
+      <div class="grid gap-6 md:grid-cols-2">
+        {rest.map((project, i) => (
+          <ProjectCard project={project} index={i + 1} />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    #work {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .work-fade {
+      opacity: 0;
+    }
+    #work.is-visible .work-fade {
+      animation: work-fade-up 0.6s ease-out forwards;
+    }
+  }
+
+  @keyframes work-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

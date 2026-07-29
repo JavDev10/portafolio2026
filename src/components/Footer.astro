@@ -1,0 +1,36 @@
+---
+const year = new Date().getFullYear();
+import { ThinkingOrb } from 'thinking-orbs';
+
+---
+
+<footer id="contact" class="bg-foreground text-background" data-reveal>
+  <div class="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-16">
+    <div class="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end">
+      <h2 class="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+        Construyamos<br />algo.
+        <div class="py-4">
+          <ThinkingOrb state="shaping" size={64} speed={1.50} theme="light" client:visible/>
+        </div>
+      </h2>
+      
+      <a
+        href="mailto:j.camanotorres12@gmail.com"
+        class="border border-background px-6 py-3 text-xs uppercase tracking-widest transition-opacity hover:opacity-80"
+      >
+        ENVÍA UN CORREO
+      </a>
+    </div>
+
+    <div class="h-px w-full bg-background/20"></div>
+
+    <div class="flex flex-col items-start justify-between gap-4 text-xs uppercase tracking-widest text-background/70 sm:flex-row sm:items-center">
+      <span>&copy; {year} JAVIER CAMAÑO TORRES</span>
+      <div class="flex gap-6">
+        <a href="https://github.com/JavDev10" target="_blank" class="py-2 transition-colors hover:text-background">GitHub</a>
+        <a href="https://www.linkedin.com/in/javier-camano-torres12/" target="_blank" class="py-2 transition-colors hover:text-background">LinkedIn</a>
+        <a href="https://drive.google.com/file/d/13l5oyYN3nVoVIcp0s1k1CsXmmOl0Se1I/view?usp=sharing" target="_blank" class="py-2 transition-colors hover:text-background">Currículum</a>
+      </div>
+    </div>
+  </div>
+</footer>

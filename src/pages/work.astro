@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projects } from "../data/projects";
+
+const spotlight = projects.find((p) => p.spotlight);
+const rest = projects.filter((p) => p !== spotlight);
+---
+
+<Layout title="Proyectos — JAVIER" description="Todos los proyectos y casos de estudio">
+  <Nav />
+
+  <section class="border-b border-border" data-reveal>
+    <div class="mx-auto max-w-6xl px-6 pt-40 pb-16">
+      <div class="mb-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <a href="/" class="transition-colors hover:text-foreground">&larr; Inicio</a>
+        <span>// PÁGINA: PROYECTOS</span>
+        <span class="line-draw h-px flex-1 bg-border"></span>
+        <span>{String(projects.length).padStart(3, "0")}</span>
+      </div>
+
+      <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">Todos los Proyectos</h1>
+      <p class="mt-4 max-w-xl text-muted-foreground">
+        Un registro de lo que he construido, productos lanzados,
+        herramientas internas y algún que otro proyecto personal.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-border">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-16">
+      {spotlight && <ProjectCard project={spotlight} index={projects.indexOf(spotlight)} featured />}
+
+      <div class="grid gap-6 md:grid-cols-2">
+        {rest.map((project) => (
+          <ProjectCard project={project} index={projects.indexOf(project)} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

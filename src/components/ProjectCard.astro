@@ -1,0 +1,150 @@
+---
+import type { Project } from "../data/projects";
+
+interface Props {
+  project: Project;
+  index: number;
+  featured?: boolean;
+}
+
+const { project, index, featured = false } = Astro.props;
+const num = String(index + 1).padStart(2, "0");
+const images = project.images ?? [];
+const hasImages = images.length > 0;
+const boxX = featured ? "0px" : index % 2 === 0 ? "-36px" : "36px";
+---
+
+<article
+  class="box-in flex h-full flex-col border-2 border-foreground bg-card"
+  data-reveal
+  style={`--box-x: ${boxX}`}
+>
+  <div class="flex items-center justify-between bg-foreground px-4 py-2 text-xs uppercase tracking-widest text-background">
+    <span>Project_{num}</span>
+    <span class="flex items-center gap-3">
+      {featured && <span class="text-accent">En desarrollo</span>}
+      <span>{project.year}</span>
+    </span>
+  </div>
+
+  <div class={featured ? "flex flex-1 flex-col lg:flex-row" : "flex flex-1 flex-col"}>
+    <div
+      class={`carousel relative flex shrink-0 items-center justify-center overflow-hidden ${
+        featured ? "aspect-[16/10] lg:aspect-auto lg:w-1/2" : "aspect-[4/3]"
+      }`}
+      style="background-color: var(--color-card); background-image: radial-gradient(circle, var(--color-dot) 1.5px, transparent 1.5px); background-size: 20px 20px;"
+      data-carousel
+    >
+      {hasImages ? (
+        <>
+          <div class="flex h-full w-full transition-transform duration-500 ease-out" data-track>
+            {images.map((src) => (
+              <img
+                src={src}
+                alt={project.title}
+                data-lightbox
+                class="h-full w-full shrink-0 cursor-zoom-in object-cover"
+              />
+            ))}
+          </div>
+
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Imagen anterior"
+                class="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-foreground/20 bg-background/70 text-sm backdrop-blur-sm transition-colors hover:bg-foreground hover:text-background"
+                data-prev
+              >
+                &larr;
+              </button>
+              <button
+                type="button"
+                aria-label="Imagen siguiente"
+                class="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-foreground/20 bg-background/70 text-sm backdrop-blur-sm transition-colors hover:bg-foreground hover:text-background"
+                data-next
+              >
+                &rarr;
+              </button>
+              <div class="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" data-dots>
+                {images.map((_, i) => (
+                  <span
+                    class="h-1.5 w-1.5 rounded-full bg-foreground/30 transition-colors data-[active]:bg-accent"
+                    data-dot="true"
+                    data-active={i === 0 ? "true" : undefined}
+                  ></span>
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <span class={`font-bold text-foreground/10 ${featured ? "text-8xl sm:text-9xl" : "text-7xl sm:text-8xl"}`}>
+            {num}
+          </span>
+          <span class="absolute bottom-3 left-3 text-xs uppercase tracking-widest text-muted-foreground">
+            {project.role}
+          </span>
+        </>
+      )}
+    </div>
+
+    <div class={`flex flex-1 flex-col gap-3 p-5 ${featured ? "lg:w-1/2 lg:justify-center lg:p-8" : ""}`}>
+      <h3 class={featured ? "text-2xl font-bold tracking-tight sm:text-3xl" : "text-lg font-bold tracking-tight"}>
+        {project.title}
+      </h3>
+      <p class={featured ? "text-sm text-muted-foreground sm:text-base" : "text-sm text-muted-foreground"}>
+        {project.description}
+      </p>
+
+      <div class="mt-auto flex flex-wrap gap-2 pt-2">
+        {project.tags.map((tag) => (
+          <span class="border border-border px-2 py-1 text-xs uppercase tracking-widest text-muted-foreground">
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <a
+        href={project.href ?? "#"}
+        class="mt-2 inline-flex items-center gap-1 py-1 text-xs uppercase tracking-widest text-accent transition-opacity hover:opacity-70"
+      >
+        Ver Proyecto <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</article>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>("[data-track]");
+    const dots = [...carousel.querySelectorAll<HTMLElement>("[data-dot]")];
+    const prevBtn = carousel.querySelector<HTMLElement>("[data-prev]");
+    const nextBtn = carousel.querySelector<HTMLElement>("[data-next]");
+
+    if (!track || dots.length === 0) return;
+
+    let current = 0;
+
+    function update() {
+      track!.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((dot, i) => dot.toggleAttribute("data-active", i === current));
+    }
+
+    prevBtn?.addEventListener("click", () => {
+      current = (current - 1 + dots.length) % dots.length;
+      update();
+    });
+    nextBtn?.addEventListener("click", () => {
+      current = (current + 1) % dots.length;
+      update();
+    });
+    dots.forEach((dot, i) =>
+      dot.addEventListener("click", () => {
+        current = i;
+        update();
+      })
+    );
+  });
+</script>
