@@ -45,7 +45,7 @@ export const projects: Project[] = [
     year: "2026",
     role: "Full-stack",
     description:
-      "Plataforma SaaS para educación diferencial (discapacidad intelectual, síndrome de Down como caso ancla) que permite a docentes de programas PIE crear actividades personalizadas con un motor pedagógico basado en método Troncoso y ayudas graduadas. Diseño con minimización de datos alineado a la Ley 21.719 y seguridad multi-tenant a nivel de base de datos. En desarrollo activo (fase 2 de 6) · seleccionado entre los 20 mejores proyectos en Mercado E (Santo Tomás). Nace de mi proyecto de título, validado con el Instituto Down de Concepción.",
+      "Plataforma SaaS para educación diferencial (discapacidad intelectual, síndrome de Down como caso ancla) que permite a docentes de programas PIE crear actividades personalizadas con un motor pedagógico basado en método Troncoso y ayudas graduadas. Diseño con minimización de datos alineado a la Ley 21.719 y seguridad multi-tenant a nivel de base de datos. En desarrollo activo (fase 2 de 6) · Semifinalista en Mercado E (Santo Tomás). Nace de mi proyecto de título, validado con el Instituto Down de Concepción.",
     tags: ["REACT", "TYPESCRIPT", "SUPABASE", "POSTGRESQL"],
     featured: true,
     spotlight: true,
