@@ -1,3 +1,30 @@
+import type { ImageMetadata } from "astro";
+
+import eduAdaptaFondo from "../assets/projects/EduAdapta/fondo-edu.jpg";
+
+import wooloader1 from "../assets/projects/wooloader/wooloader-1.png";
+import wooloader2 from "../assets/projects/wooloader/wooloader-2.png";
+import wooloader3 from "../assets/projects/wooloader/wooloader-3.png";
+import wooloader4 from "../assets/projects/wooloader/wooloader-4.png";
+import wooloader5 from "../assets/projects/wooloader/wooloader-5.png";
+
+import pTitulo1 from "../assets/projects/p.titulo/p.titulo-1.webp";
+import pTitulo2 from "../assets/projects/p.titulo/p.titulo-2.webp";
+import pTitulo3 from "../assets/projects/p.titulo/p.titulo-3.webp";
+import pTitulo4 from "../assets/projects/p.titulo/p.titulo-4.webp";
+import pTitulo5 from "../assets/projects/p.titulo/p.titulo-5.webp";
+import pTitulo6 from "../assets/projects/p.titulo/p.titulo-6.webp";
+import pTitulo7 from "../assets/projects/p.titulo/p.titulo-7.webp";
+import pTitulo8 from "../assets/projects/p.titulo/p.titulo-8.webp";
+
+import doro1 from "../assets/projects/dorodoro/doro1.jpg";
+import doro2 from "../assets/projects/dorodoro/doro2.jpg";
+import doro3 from "../assets/projects/dorodoro/doro3.jpg";
+import doro4 from "../assets/projects/dorodoro/doro4.jpg";
+import doro5 from "../assets/projects/dorodoro/doro5.jpg";
+import doro6 from "../assets/projects/dorodoro/doro6.jpg";
+import doro7 from "../assets/projects/dorodoro/doro7.jpg";
+
 export interface Project {
   slug: string;
   title: string;
@@ -8,7 +35,7 @@ export interface Project {
   href?: string;
   featured?: boolean;
   spotlight?: boolean;
-  images?: string[];
+  images?: ImageMetadata[];
 }
 
 export const projects: Project[] = [
@@ -23,10 +50,7 @@ export const projects: Project[] = [
     featured: true,
     spotlight: true,
     href: "#",
-    images: [
-      "/projects/EduAdapta/fondo-edu.jpg",
-    ],
-    
+    images: [eduAdaptaFondo],
   },
   {
     slug: "HERRAMIENTA · CÓDIGO ABIERTO",
@@ -38,13 +62,7 @@ export const projects: Project[] = [
     tags: ["REACT", "TYPESCRIPT", "SUPABASE", "VITE"],
     href: "https://wooloader.com/",
     featured: true,
-    images: [
-      "/projects/wooloader/wooloader-1.png",
-      "/projects/wooloader/wooloader-2.png",
-      "/projects/wooloader/wooloader-3.png",
-      "/projects/wooloader/wooloader-4.png",
-      "/projects/wooloader/wooloader-5.png",
-    ],
+    images: [wooloader1, wooloader2, wooloader3, wooloader4, wooloader5],
   },
   {
     slug: "PROYECTO ACADÉMICO",
@@ -56,33 +74,16 @@ export const projects: Project[] = [
     tags: ["REACT", "TYPESCRIPT", "FIREBASE"],
     featured: true,
     href: "https://www.youtube.com/watch?v=9LxU09u9mXY",
-    images: [
-      "/projects/p.titulo/p.titulo-1.webp",
-      "/projects/p.titulo/p.titulo-2.webp",
-      "/projects/p.titulo/p.titulo-3.webp",
-      "/projects/p.titulo/p.titulo-4.webp",
-      "/projects/p.titulo/p.titulo-5.webp",
-      "/projects/p.titulo/p.titulo-6.webp",
-      "/projects/p.titulo/p.titulo-7.webp",
-      "/projects/p.titulo/p.titulo-8.webp",
-    ],
+    images: [pTitulo1, pTitulo2, pTitulo3, pTitulo4, pTitulo5, pTitulo6, pTitulo7, pTitulo8],
   },
   {
     slug: "APP DE ESCRITORIO",
     title: "DoroDoro",
     year: "2025",
     role: "Full-stack",
-    description: "Timer pomodoro de escritorio con temas visuales personalizables. Construido deliberadamente sin framework ni bundler — un solo archivo HTML/JS cargado directo en Electron. 21 descargas orgánicas en itch.io sin promoción.",
+    description: "Timer pomodoro de escritorio con temas visuales personalizables. Construido deliberadamente sin framework ni bundler — un solo archivo HTML/JS cargado directo en Electron. 22 descargas orgánicas en itch.io sin promoción.",
     tags: ["ELECTRON", "JAVASCRIPT", "TAILWIND"],
     href: "https://javidev12.itch.io/dorodoro",
-    images: [
-      "/projects/dorodoro/doro1.jpg",
-      "/projects/dorodoro/doro2.jpg",
-      "/projects/dorodoro/doro3.jpg",
-      "/projects/dorodoro/doro4.jpg",
-      "/projects/dorodoro/doro5.jpg",
-      "/projects/dorodoro/doro6.jpg",
-      "/projects/dorodoro/doro7.jpg",
-    ],
+    images: [doro1, doro2, doro3, doro4, doro5, doro6, doro7],
   },
 ];

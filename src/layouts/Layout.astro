@@ -5,9 +5,33 @@ import Lightbox from "../components/Lightbox.astro";
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  type?: "website" | "article";
 }
 
-const { title, description = "Portafolio" } = Astro.props;
+const {
+  title,
+  description = "Portafolio de Javier Camaño Torres, ingeniero full-stack especializado en Laravel, PHP, React y TypeScript.",
+  image = "/img-art1.jpg",
+  type = "website",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
+const siteName = "Javier Camaño Torres — Portafolio";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Javier Camaño Torres",
+  url: Astro.site?.toString(),
+  jobTitle: "Ingeniero Full-Stack",
+  knowsAbout: ["Laravel", "PHP", "React", "TypeScript", "Astro"],
+  sameAs: [
+    "https://github.com/JavDev10",
+    "https://www.linkedin.com/in/javier-camano-torres12/",
+  ],
+};
 ---
 
 <!doctype html>
@@ -15,9 +39,33 @@ const { title, description = "Portafolio" } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
+    <meta name="theme-color" content="#0f0f0f" />
+    <meta name="author" content="Javier Camaño Torres" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/favicon.webp" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="es_CL" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
