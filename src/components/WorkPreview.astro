@@ -1,7 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import ProjectCard from "./ProjectCard.astro";
 import { projects } from "../data/projects";
 import { ThinkingOrb } from 'thinking-orbs';
+import imgLateral from "../assets/decorative/img-lateral.jpg";
+import imgLateral2 from "../assets/decorative/img-lateral2.jpg";
 
 const spotlight = projects.find((p) => p.spotlight);
 const rest = projects.filter((p) => p.featured && !p.spotlight).slice(0, 2);
@@ -9,10 +12,10 @@ const rest = projects.filter((p) => p.featured && !p.spotlight).slice(0, 2);
 
 <section id="work" class="relative overflow-hidden border-b border-border" data-reveal>
   <div class="pointer-events-none absolute inset-y-0 left-0 hidden border-r border-border lg:block lg:w-[max(0px,min(calc((100vw-64rem)/2),22rem))] [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
-    <img src="/img-lateral.jpg" alt="" class="h-full w-full object-cover opacity-100 grayscale" />
+    <Image src={imgLateral} alt="" class="h-full w-full object-cover opacity-100 grayscale" widths={[352]} />
   </div>
   <div class="pointer-events-none absolute inset-y-0 right-0 hidden border-l border-border lg:block lg:w-[max(0px,min(calc((100vw-64rem)/2),22rem))] [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
-    <img src="/img-lateral2.jpg" alt="" class="h-full w-full object-cover opacity-100 grayscale" />
+    <Image src={imgLateral2} alt="" class="h-full w-full object-cover opacity-100 grayscale" widths={[352]} />
   </div>
 
   <div class="relative mx-auto max-w-6xl px-6 py-20">
