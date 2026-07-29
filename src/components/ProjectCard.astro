@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { Project } from "../data/projects";
 
 interface Props {
@@ -38,12 +39,14 @@ const boxX = featured ? "0px" : index % 2 === 0 ? "-36px" : "36px";
       {hasImages ? (
         <>
           <div class="flex h-full w-full transition-transform duration-500 ease-out" data-track>
-            {images.map((src) => (
-              <img
-                src={src}
+            {images.map((image) => (
+              <Image
+                src={image}
                 alt={project.title}
                 data-lightbox
                 class="h-full w-full shrink-0 cursor-zoom-in object-cover"
+                widths={[480, 768, 1080]}
+                sizes={featured ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 768px) 50vw, 100vw"}
               />
             ))}
           </div>
