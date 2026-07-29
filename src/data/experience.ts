@@ -11,7 +11,7 @@ export const experience: ExperienceItem[] = [
   {
     role: "Desarrollador Web (Freelance)",
     company: "FocusTeam",
-    duration: "5 meses",
+    duration: "4 meses",
     period: "Abril 2026 - Actualidad",
     description:
       "Desarrollo sitios web para clientes de la agencia mediante iteración directa hasta el resultado óptimo. Automaticé la optimización de imágenes del equipo (reduciendo espacio en hosting) y construí un formulario para que los clientes suban su catálogo e importen productos directo a la tienda.",
