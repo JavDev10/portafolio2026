@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import SiteCard from "../components/SiteCard.astro";
+import { sites } from "../data/sites";
+---
+
+<Layout
+  title="Sitios Web — Javier Camaño Torres"
+  description="Algunos sitios web y landing pages desarrollados por Javier Camaño Torres para empresas y profesionales: EduAdapta, Coffee Center, Hyer Constructora, Fortium Security y más."
+>
+  <Nav />
+
+  <section class="border-b border-border" data-reveal>
+    <div class="mx-auto max-w-6xl px-6 pt-40 pb-16">
+      <div class="mb-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <a href="/" class="transition-colors hover:text-foreground">&larr; Inicio</a>
+        <span>// PÁGINA: SITIOS WEB</span>
+        <span class="line-draw h-px flex-1 bg-border"></span>
+        <span>{String(sites.length).padStart(3, "0")}</span>
+      </div>
+
+      <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">Sitios Web</h1>
+      <p class="mt-4 max-w-xl text-muted-foreground">
+        Sitios corporativos y landing pages construidos para empresas y profesionales.
+        Pasa el cursor sobre una captura, o tócala en tu teléfono, para recorrerla de arriba a abajo.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-border">
+    <div class="mx-auto grid max-w-6xl gap-6 px-6 py-16 md:grid-cols-2">
+      {sites.map((site, i) => <SiteCard site={site} index={i} />)}
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

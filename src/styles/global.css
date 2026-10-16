@@ -95,27 +95,97 @@ body {
   }
 }
 
-[data-reveal].box-in {
-  opacity: 0;
-  transform: translate(var(--box-x, 0px), 28px) scale(0.94);
+/* Entrada "impresa": la tarjeta se divide en 3 columnas que aparecen de arriba
+   a abajo, cada una a su propia velocidad, con una barra de escaneo en el
+   borde de cada columna. El recorte va en el hijo .print-in y no en el
+   elemento [data-reveal]: un elemento recortado por completo nunca intersecta,
+   así que el observer no lo detectaría. */
+@property --print-c1 {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --print-c2 {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --print-c3 {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+[data-reveal].print-reveal {
+  opacity: 1;
+  transform: none;
   transition: none;
 }
 
-[data-reveal].box-in.is-visible {
-  animation: box-in 0.6s ease-out forwards;
+.print-in {
+  position: relative;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% var(--print-c3),
+    66.666% var(--print-c3),
+    66.666% var(--print-c2),
+    33.333% var(--print-c2),
+    33.333% var(--print-c1),
+    0 var(--print-c1)
+  );
+}
+
+[data-reveal].is-visible > .print-in {
+  animation:
+    print-c1 0.9s cubic-bezier(0.65, 0, 0.35, 1) var(--print-delay, 0s) forwards,
+    print-c2 1.35s cubic-bezier(0.65, 0, 0.35, 1) var(--print-delay, 0s) forwards,
+    print-c3 1.1s cubic-bezier(0.65, 0, 0.35, 1) var(--print-delay, 0s) forwards;
+}
+
+/* Una barra por columna: cada gradiente ocupa un tercio del ancho y pinta 6px
+   justo encima del borde de su columna. Al terminar (100% + 6px) queda fuera. */
+.print-in::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(transparent calc(var(--print-c1) - 6px), var(--color-accent) 0 var(--print-c1), transparent 0),
+    linear-gradient(transparent calc(var(--print-c2) - 6px), var(--color-accent) 0 var(--print-c2), transparent 0),
+    linear-gradient(transparent calc(var(--print-c3) - 6px), var(--color-accent) 0 var(--print-c3), transparent 0);
+  background-size: 33.334% 100%;
+  background-position: 0 0, 50% 0, 100% 0;
+  background-repeat: no-repeat;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal].box-in {
-    opacity: 1;
-    transform: none;
+  .print-in,
+  [data-reveal].is-visible > .print-in {
+    clip-path: none;
     animation: none;
+  }
+  .print-in::after {
+    display: none;
   }
 }
 
-@keyframes box-in {
+@keyframes print-c1 {
   to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
+    --print-c1: calc(100% + 6px);
+  }
+}
+
+@keyframes print-c2 {
+  to {
+    --print-c2: calc(100% + 6px);
+  }
+}
+
+@keyframes print-c3 {
+  to {
+    --print-c3: calc(100% + 6px);
   }
 }
