@@ -10,7 +10,7 @@ interface Props {
 const { site, index } = Astro.props;
 const num = String(index + 1).padStart(2, "0");
 const isLanding = site.pages.length === 1;
-const boxX = index % 2 === 0 ? "-36px" : "36px";
+const delay = `${(index % 2) * 0.12}s`;
 
 // Duración del recorrido proporcional al alto de la captura: ~1s por cada
 // "pantalla" (viewport 16:10) que queda bajo el pliegue, con un mínimo de 1s.
@@ -20,93 +20,95 @@ const durationFor = (img: { width: number; height: number }) =>
 ---
 
 <article
-  class="box-in flex h-full flex-col border-2 border-foreground bg-card"
+  class="print-reveal h-full"
   data-reveal
   data-site
-  style={`--box-x: ${boxX}`}
+  style={`--print-delay: ${delay}`}
 >
-  <div class="flex items-center justify-between bg-foreground px-4 py-2 text-xs uppercase tracking-widest text-background">
-    <span>Site_{num}</span>
-    <span>{isLanding ? "Landing" : `${String(site.pages.length).padStart(2, "0")} Páginas`}</span>
-  </div>
-
-  <div class="flex items-center gap-3 border-b-2 border-foreground px-3 py-2">
-    <span class="flex shrink-0 gap-1.5" aria-hidden="true">
-      <span class="h-2.5 w-2.5 border border-foreground"></span>
-      <span class="h-2.5 w-2.5 border border-foreground"></span>
-      <span class="h-2.5 w-2.5 bg-accent"></span>
-    </span>
-    <span class="min-w-0 flex-1 truncate border border-border bg-background px-3 py-1 text-xs text-muted-foreground">
-      https://<span class="text-foreground">{site.domain}</span>
-    </span>
-  </div>
-
-  <div
-    class="site-viewport relative aspect-[16/10] cursor-ns-resize overflow-hidden bg-background outline-none"
-    style={`--dur: ${durationFor(site.pages[0])}`}
-    role="button"
-    tabindex="0"
-    aria-label={`Recorrer la captura de ${site.title}`}
-    data-viewport
-  >
-    {site.pages.map((page, i) => (
-      <Image
-        src={page}
-        alt={`Captura de ${site.title}${isLanding ? "" : `, página ${i + 1}`}`}
-        class="site-shot absolute inset-x-0 top-0 h-auto w-full select-none"
-        widths={[640, 1080]}
-        sizes="(min-width: 768px) 50vw, 100vw"
-        draggable="false"
-        hidden={i !== 0}
-        data-page={i}
-        data-dur={durationFor(page)}
-      />
-    ))}
-
-    <span class="site-progress pointer-events-none absolute inset-y-0 right-0 w-1 bg-accent" aria-hidden="true"></span>
-
-    <span
-      class="site-hint pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 border border-foreground bg-background px-2.5 py-1.5 text-[10px] uppercase tracking-widest"
-      aria-hidden="true"
-    >
-      <span class="text-accent">&darr;</span>
-      <span class="hint-hover">Pasa el cursor</span>
-      <span class="hint-touch">Toca para recorrer</span>
-    </span>
-  </div>
-
-  {!isLanding && (
-    <div class="flex border-t-2 border-foreground" role="tablist" aria-label={`Páginas de ${site.title}`}>
-      {site.pages.map((_, i) => (
-        <button
-          type="button"
-          role="tab"
-          aria-selected={i === 0 ? "true" : "false"}
-          class="site-tab flex-1 border-r border-border py-2.5 text-xs tracking-widest text-muted-foreground transition-colors last:border-r-0 hover:text-foreground"
-          data-tab={i}
-        >
-          {String(i + 1).padStart(2, "0")}
-        </button>
-      ))}
+  <div class="print-in flex h-full flex-col border-2 border-foreground bg-card">
+    <div class="flex items-center justify-between bg-foreground px-4 py-2 text-xs uppercase tracking-widest text-background">
+      <span>Site_{num}</span>
+      <span>{isLanding ? "Landing" : `${String(site.pages.length).padStart(2, "0")} Páginas`}</span>
     </div>
-  )}
 
-  <div class="flex flex-1 flex-col gap-3 border-t-2 border-foreground p-5">
-    <div class="flex items-start justify-between gap-4">
-      <h3 class="text-lg font-bold tracking-tight">{site.title}</h3>
-      <span class="shrink-0 border border-border px-2 py-1 text-xs uppercase tracking-widest text-muted-foreground">
-        {site.category}
+    <div class="flex items-center gap-3 border-b-2 border-foreground px-3 py-2">
+      <span class="flex shrink-0 gap-1.5" aria-hidden="true">
+        <span class="h-2.5 w-2.5 border border-foreground"></span>
+        <span class="h-2.5 w-2.5 border border-foreground"></span>
+        <span class="h-2.5 w-2.5 bg-accent"></span>
+      </span>
+      <span class="min-w-0 flex-1 truncate border border-border bg-background px-3 py-1 text-xs text-muted-foreground">
+        https://<span class="text-foreground">{site.domain}</span>
       </span>
     </div>
 
-    <a
-      href={`https://${site.domain}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-auto inline-flex items-center gap-1 self-start py-1 text-xs uppercase tracking-widest text-accent transition-opacity hover:opacity-70"
+    <div
+      class="site-viewport relative aspect-[16/10] cursor-ns-resize overflow-hidden bg-background outline-none"
+      style={`--dur: ${durationFor(site.pages[0])}`}
+      role="button"
+      tabindex="0"
+      aria-label={`Recorrer la captura de ${site.title}`}
+      data-viewport
     >
-      Visitar Sitio <span aria-hidden="true">&nearr;</span>
-    </a>
+      {site.pages.map((page, i) => (
+        <Image
+          src={page}
+          alt={`Captura de ${site.title}${isLanding ? "" : `, página ${i + 1}`}`}
+          class="site-shot absolute inset-x-0 top-0 h-auto w-full select-none"
+          widths={[640, 1080]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          draggable="false"
+          hidden={i !== 0}
+          data-page={i}
+          data-dur={durationFor(page)}
+        />
+      ))}
+
+      <span class="site-progress pointer-events-none absolute inset-y-0 right-0 w-1 bg-accent" aria-hidden="true"></span>
+
+      <span
+        class="site-hint pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 border border-foreground bg-background px-2.5 py-1.5 text-[10px] uppercase tracking-widest"
+        aria-hidden="true"
+      >
+        <span class="text-accent">&darr;</span>
+        <span class="hint-hover">Pasa el cursor</span>
+        <span class="hint-touch">Toca para recorrer</span>
+      </span>
+    </div>
+
+    {!isLanding && (
+      <div class="flex border-t-2 border-foreground" role="tablist" aria-label={`Páginas de ${site.title}`}>
+        {site.pages.map((_, i) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+            class="site-tab flex-1 border-r border-border py-2.5 text-xs tracking-widest text-muted-foreground transition-colors last:border-r-0 hover:text-foreground"
+            data-tab={i}
+          >
+            {String(i + 1).padStart(2, "0")}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div class="flex flex-1 flex-col gap-3 border-t-2 border-foreground p-5">
+      <div class="flex items-start justify-between gap-4">
+        <h3 class="text-lg font-bold tracking-tight">{site.title}</h3>
+        <span class="shrink-0 border border-border px-2 py-1 text-xs uppercase tracking-widest text-muted-foreground">
+          {site.category}
+        </span>
+      </div>
+
+      <a
+        href={`https://${site.domain}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-auto inline-flex items-center gap-1 self-start py-1 text-xs uppercase tracking-widest text-accent transition-opacity hover:opacity-70"
+      >
+        Visitar Sitio <span aria-hidden="true">&nearr;</span>
+      </a>
+    </div>
   </div>
 </article>
 
